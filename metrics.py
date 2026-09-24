@@ -3,8 +3,8 @@
   python3 metrics.py
 
 A system is a results file (results/<system>.jsonl, one line per item id with `probs` in the item's option order).
-Jev-Omni's DecisionBench runs from jev-omni.js (build/eval/reference-fp32.jsonl, browser-q8f32.jsonl) are read too,
-under their unprefixed ids, when present.
+Jev-Omni's runs are read from results/jev/: dvb-{torch,webgpu}.jsonl (the image rows of bench/jev.jsonl, run in
+jev-omni.js) and its earlier DecisionBench runs (reference-fp32.jsonl, browser-q8f32.jsonl) under unprefixed ids.
 
 Accuracy: argmax = label. The 95% interval resamples tasks (one image, screen or DecisionBench state and all its
 questions), since questions about one image are not independent. Brier: summed over options (uniform = 1 - 1/K).
@@ -21,7 +21,7 @@ from statistics import median
 
 HERE = Path(__file__).resolve().parent
 RES = HERE / "results"
-JEV = HERE.parent / "jev-omni.js/build/eval"
+JEV = RES / "jev"   # copies of jev-omni.js build/eval/*: this bench's rows, without prompts and hidden states
 
 MODELS = {"kev-4b-vision": "Kev-4B", "kev-0.8b-vision": "Kev-0.8B", "cua-s1-4b-0.2-multimodal": "cua-s1-4b-0.2", "jev-omni": "Jev-Omni"}
 HOME = {"kev-4b-vision": {"vision-v1", "vision-v2"}, "kev-0.8b-vision": {"vision-v1", "vision-v2"},
@@ -51,9 +51,7 @@ def systems() -> dict[str, dict]:
     # the bench's own rows first (dvb-*.jsonl, run by the Jev-Omni thread on bench/jev.jsonl), then earlier runs of
     # the same questions under their unprefixed ids
     for name, file, prefix in (("jev-omni-torch", "dvb-torch.jsonl", ""), ("jev-omni-webgpu", "dvb-webgpu.jsonl", ""),
-                               ("jev-omni-torch", "reference-fp32.jsonl", "decisionbench/"), ("jev-omni-webgpu", "browser-q8f32.jsonl", "decisionbench/"),
-                               ("jev-omni-torch", "torch-fp32-block-vision-v1.jsonl", "vision-v1/"),
-                               ("jev-omni-torch", "torch-fp32-block-vision-v2.jsonl", "vision-v2/")):
+                               ("jev-omni-torch", "reference-fp32.jsonl", "decisionbench/"), ("jev-omni-webgpu", "browser-q8f32.jsonl", "decisionbench/")):
         extra = load(JEV / file, prefix)
         if extra:
             s.setdefault(name, {})
@@ -162,8 +160,9 @@ def main():
     print((RES / "tables.md").read_text())
 
 
-PAIRS = [("kev-4b-vision-webgpu", "cua-s1-4b-0.2-multimodal-webgpu"), ("kev-4b-vision-webgpu", "jev-omni-torch"),
-         ("jev-omni-torch", "cua-s1-4b-0.2-multimodal-webgpu"), ("kev-4b-vision-webgpu", "kev-0.8b-vision-webgpu")]
+PAIRS = [("kev-4b-vision-webgpu", "cua-s1-4b-0.2-multimodal-webgpu"), ("kev-4b-vision-webgpu", "jev-omni-webgpu"),
+         ("jev-omni-webgpu", "cua-s1-4b-0.2-multimodal-webgpu"), ("kev-4b-vision-webgpu", "kev-0.8b-vision-webgpu"),
+         ("kev-0.8b-vision-webgpu", "cua-s1-4b-0.2-multimodal-webgpu")]
 
 
 def paired(sub, ra, rb, n_boot=2000, seed=0):
@@ -238,10 +237,12 @@ def tables(summary, parity, lat, pairs) -> str:
     for n in names:
         c = summary[n]["categories"]
         out.append(f"| {n} | " + " | ".join(f"{pct(c[k]['acc'])} (n={c[k]['n']})" if k in c else "-" for k in CATEGORIES) + " |")
-    out.append("\n### Latency (median ms per item: image = preprocess + vision tower), bundle, memory\n")
+    out.append("\n### Latency in the full runs (median ms per item: image = preprocess + vision tower; one model at a time, on a shared machine)\n")
     out.append("| system | source | items | total | image | decoder |")
     out.append("|---|---|---:|---:|---:|---:|")
     for n in names:
+        if not n.endswith("-webgpu"):
+            continue
         for src, v in summary[n]["sources"].items():
             if v["latency"]:
                 l = v["latency"]

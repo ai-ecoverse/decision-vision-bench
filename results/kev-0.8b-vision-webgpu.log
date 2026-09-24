@@ -1,0 +1,33 @@
+
+Running 1 test using 1 worker
+
+[browser] bench: ready; crossOriginIsolated=true
+[browser] Failed to load resource: the server responded with a status of 404 (Not Found)
+[browser] bench: kev-0.8b-vision q8f32 webgpu (apple metal-3): 411 items, 0 already done
+[browser] bench: loaded in 1968 ms
+[browser] bench: warm-up vision-v1/shapes-0/count: 695 ms
+[browser] bench: 1/411 vision-v1/shapes-0/count: 375 ms
+[browser] bench: 2/411 vision-v1/shapes-0/color: 579 ms
+[browser] bench: 3/411 vision-v1/shapes-0/triangle: 609 ms
+[browser] bench: 26/411 vision-v1/chart-0/compare: 816 ms
+[browser] bench: 51/411 vision-v1/screen-2/error: 807 ms
+[browser] bench: 76/411 vision-v1/receipt-2/cash: 883 ms
+[browser] bench: 101/411 vision-v1/coins/coins: 363 ms
+[browser] bench: 126/411 vision-v2/shop-2/stock: 1218 ms
+[browser] bench: 151/411 vision-v2/orders-1/shipped: 1855 ms
+[browser] bench: 176/411 vision-v2/bars-1/second: 872 ms
+[browser] bench: 201/411 vision-v2/dots-6/total: 965 ms
+[browser] bench: 226/411 vision-v2/label-3/signature: 1815 ms
+[browser] bench: 251/411 gui360/gui360_ppt_1_127_4/el_8: 1069 ms
+[browser] bench: 276/411 gui360/gui360_ppt_1_173_1/el_12: 1631 ms
+[browser] bench: 301/411 gui360/gui360_ppt_1_92_2/element: 2329 ms
+[browser] bench: 326/411 gui360/gui360_word_1_22_5/el_4: 1099 ms
+[browser] bench: 351/411 gui360/gui360_word_2_151_2/el_15: 1838 ms
+[browser] bench: 376/411 decisionbench/b3-m-0011/pair_disposition: 1193 ms
+[browser] bench: 401/411 decisionbench/b3-m-0054/split_assignment: 762 ms
+{"model":"kev-0.8b-vision","variant":"q8f32","ep":"webgpu","adapter":"apple metal-3","loadMs":1968,"items":411,"runMs":554212,"revision":"30fdac8c461859e0","run":"jaredpalmer/kev-0.8b@225679690cdd1de6fceb1258b1bddf61c493cee9","bundleBytes":1023474761,"memoryMB":{"baseline":627,"peak":5145},"at":"2026-09-24T08:41:15.733Z"}
+  ✓  1 spec/bench.spec.ts:32:1 › bench (9.6m)
+
+  Slow test file: spec/bench.spec.ts (9.6m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 passed (9.6m)

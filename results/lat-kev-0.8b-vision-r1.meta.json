@@ -1,0 +1,17 @@
+{
+ "model": "kev-0.8b-vision",
+ "variant": "q8f32",
+ "ep": "webgpu",
+ "adapter": "apple metal-3",
+ "loadMs": 1314,
+ "items": 35,
+ "runMs": 14314,
+ "revision": "30fdac8c461859e0",
+ "run": "jaredpalmer/kev-0.8b@225679690cdd1de6fceb1258b1bddf61c493cee9",
+ "bundleBytes": 1023474761,
+ "memoryMB": {
+  "baseline": 755,
+  "peak": 6272
+ },
+ "at": "2026-09-24T09:10:31.109Z"
+}

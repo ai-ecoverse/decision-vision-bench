@@ -1,0 +1,17 @@
+{
+ "model": "cua-s1-4b-0.2-multimodal",
+ "variant": "q8f32",
+ "ep": "webgpu",
+ "adapter": "apple metal-3",
+ "loadMs": 4214,
+ "items": 35,
+ "runMs": 75416,
+ "revision": "7dad98810537493d",
+ "run": "cua-ai/cua-s1-4b-0.2@16818868b0cc7813808aae4e87b417657046ab79",
+ "bundleBytes": 5338825080,
+ "memoryMB": {
+  "baseline": 735,
+  "peak": 17818
+ },
+ "at": "2026-09-24T09:11:57.194Z"
+}

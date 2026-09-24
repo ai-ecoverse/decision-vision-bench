@@ -1,0 +1,33 @@
+
+Running 1 test using 1 worker
+
+[browser] bench: ready; crossOriginIsolated=true
+[browser] Failed to load resource: the server responded with a status of 404 (Not Found)
+[browser] bench: cua-s1-4b-0.2-multimodal q8f32 webgpu (apple metal-3): 411 items, 0 already done
+[browser] bench: loaded in 6461 ms
+[browser] bench: warm-up vision-v1/shapes-0/count: 3833 ms
+[browser] bench: 1/411 vision-v1/shapes-0/count: 3568 ms
+[browser] bench: 2/411 vision-v1/shapes-0/color: 3391 ms
+[browser] bench: 3/411 vision-v1/shapes-0/triangle: 3487 ms
+[browser] bench: 26/411 vision-v1/chart-0/compare: 2596 ms
+[browser] bench: 51/411 vision-v1/screen-2/error: 1970 ms
+[browser] bench: 76/411 vision-v1/receipt-2/cash: 3201 ms
+[browser] bench: 101/411 vision-v1/coins/coins: 701 ms
+[browser] bench: 126/411 vision-v2/shop-2/stock: 10211 ms
+[browser] bench: 151/411 vision-v2/orders-1/shipped: 2635 ms
+[browser] bench: 176/411 vision-v2/bars-1/second: 1518 ms
+[browser] bench: 201/411 vision-v2/dots-6/total: 1122 ms
+[browser] bench: 226/411 vision-v2/label-3/signature: 1862 ms
+[browser] bench: 251/411 gui360/gui360_ppt_1_127_4/el_8: 2261 ms
+[browser] bench: 276/411 gui360/gui360_ppt_1_173_1/el_12: 2296 ms
+[browser] bench: 301/411 gui360/gui360_ppt_1_92_2/element: 2253 ms
+[browser] bench: 326/411 gui360/gui360_word_1_22_5/el_4: 2239 ms
+[browser] bench: 351/411 gui360/gui360_word_2_151_2/el_15: 2251 ms
+[browser] bench: 376/411 decisionbench/b3-m-0011/pair_disposition: 11891 ms
+[browser] bench: 401/411 decisionbench/b3-m-0054/split_assignment: 6107 ms
+{"model":"cua-s1-4b-0.2-multimodal","variant":"q8f32","ep":"webgpu","adapter":"apple metal-3","loadMs":6461,"items":411,"runMs":1338635,"revision":"7dad98810537493d","run":"cua-ai/cua-s1-4b-0.2@16818868b0cc7813808aae4e87b417657046ab79","bundleBytes":5338825080,"memoryMB":{"baseline":788,"peak":16256},"at":"2026-09-24T09:04:01.442Z"}
+  ✓  1 spec/bench.spec.ts:32:1 › bench (22.5m)
+
+  Slow test file: spec/bench.spec.ts (22.5m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 passed (22.6m)

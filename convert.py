@@ -215,7 +215,7 @@ def main():
         kev.append({"id": item["id"], "image": item["image"], "request": req, "perm": k["perm"]})
         cua.append({"id": item["id"], "image": item["image"], **c})
         jev.append({"id": item["id"], "set": item["source"], "family": item["family"], "type": item["type"],
-                    "image": str((BENCH / item["image"]).resolve()) if item["image"] else None,
+                    "image": f"bench/{item['image']}" if item["image"] else None,
                     "state": item["state"], "question": item["question"], "options": item["options"], "label": item["label"]})
     for name, lines in (("items", items), ("kev", kev), ("cua", cua), ("jev", jev)):
         (BENCH / f"{name}.jsonl").write_text("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in lines))

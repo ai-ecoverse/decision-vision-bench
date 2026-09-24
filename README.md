@@ -1,13 +1,14 @@
 # decision-vision-bench
 
 Three browser decision models on one mixed set of image (and some text) questions. Each model gets every item in its
-own native request format.
+own native request format. The models come from three sibling projects: [kev.js](https://github.com/ai-ecoverse/kev.js),
+[cua-s1.js](https://github.com/ai-ecoverse/cua-s1.js) and [jev-omni.js](https://github.com/ai-ecoverse/jev-omni.js).
 
 | model | what it is | bundle |
 |---|---|---|
-| **Kev-4B vision** (Kev-0.8B as a second row) | kev.js: Kev's pointer head behind Qwen3.5's stock vision tower (kev.js `feat/vision` @ 8ee0118) | 5.34 GB (1.02 GB) |
-| **cua-s1-4b-0.2 multimodal** | cua-s1.js 0.3.0 `./4b`: a LoRA on Qwen3.5-4B that picks one lettered (element, action) option from a screenshot | 5.34 GB |
-| **Jev-Omni** | jev-omni.js @ 008099d: Gemma 4 12B with a 256-way head, and images through Gemma 4's own vision embedder | 13.58 GB |
+| **Kev-4B vision** (Kev-0.8B as a second row) | [kev.js](https://github.com/ai-ecoverse/kev.js) ([#18](https://github.com/ai-ecoverse/kev.js/pull/18) @ 8ee0118): Kev's pointer head behind Qwen3.5's stock vision tower | 5.34 GB (1.02 GB) |
+| **cua-s1-4b-0.2 multimodal** | [cua-s1.js](https://github.com/ai-ecoverse/cua-s1.js) 0.3.0 `./4b`: a LoRA on Qwen3.5-4B that picks one lettered (element, action) option from a screenshot | 5.34 GB |
+| **Jev-Omni** | [jev-omni.js](https://github.com/ai-ecoverse/jev-omni.js) @ 008099d: Gemma 4 12B with a 256-way head, and images through Gemma 4's own vision embedder | 13.58 GB |
 
 The set has 411 items (`bench/items.jsonl`):
 - kev.js vision-v1 (106) and vision-v2 (128);
@@ -182,9 +183,19 @@ python3 convert.py                  # bench/*.jsonl and bench/images from ../kev
 ./latency.sh                        # interleaved latency passes -> results/lat-*.jsonl
 ./torch/run.sh                      # PyTorch references (kev.js and cua-s1.js export environments)
 # Jev-Omni (in jev-omni.js): predict.py and scripts/predict.ts over bench/jev.jsonl -> build/eval/dvb-{torch,webgpu}.jsonl
+#   (image paths are relative to this repo's root: run them from here, or rewrite the prefix)
 python3 metrics.py                  # results/summary.json, results/tables.md
 ```
 
 One model at a time: `BENCH_MODEL=kev-4b-vision npx playwright test`. The options are `BENCH_LIMIT`, `BENCH_ONLY` (id
 prefix), `BENCH_EVERY`, `BENCH_EP=wasm` and `BENCH_CHANNEL` (default `chrome`: Playwright's own headless Chromium
 stalls on the 4B graphs on macOS).
+
+## Licenses
+
+The code is Apache-2.0 ([LICENSE](LICENSE)). The items come from:
+- kev.js `eval/vision-v1` and `eval/vision-v2`: generated images (Apache-2.0) and 7 scikit-image sample photos (public
+  domain or CC0), listed in kev.js's `eval/vision-v1/README.md`;
+- [GUI-360](https://huggingface.co/datasets/vyokky/GUI-360) test-split screenshots and steps (MIT), as selected in
+  cua-s1.js;
+- [DecisionBench](https://huggingface.co/datasets/akhilaaa3/decision-bench) medium (Apache-2.0).

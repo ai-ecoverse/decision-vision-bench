@@ -78,6 +78,16 @@ serves.
 - **decisionbench:** Jev-Omni's `decisionbench.py` mapping: `True: …`/`False: …`, `key: description`, and the levels.
   The ids match its `reference-fp32.jsonl` and `browser-q8f32.jsonl` for this slice.
 
+## RSI-Jev v4.0-VL (Jev-compatible `POST /v1/systemone`; `torch/rsijev_client.py`)
+
+- **Every source:** Kev's request from `bench/kev.jsonl`, unchanged, plus `model`. The image goes in `images` as a data
+  URL of the file's own bytes, and the server puts it before the state. One question per request.
+- **Probabilities** come back in the API's order (noul: false, true; choice: criteria order; score: levels) and are
+  put in the item's option order with kev.jsonl's `perm`.
+- **One DecisionBench state** (b3-m-0054) is an event list whose events carry a free-text `role`. The server, like
+  Jev's reference, reads that as a chat transcript and refuses it, so it is sent as the same events in compact JSON
+  text. Its row carries a `note`.
+
 ## Known limits
 
 - **Duplicate element names.** In 20 of the 60 screens, two or three elements share a role and label (for example

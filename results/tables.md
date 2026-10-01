@@ -52,6 +52,11 @@
 | jev-omni-webgpu | gui360-element | 60 | 55.0 | 41.7-66.7 | 6.4 | 0.683 | 0.24 | cross |
 | jev-omni-webgpu | gui360-action | 77 | 62.3 | 51.8-72.0 | 50.0 | 0.649 | 0.31 | cross |
 | jev-omni-webgpu | decisionbench | 40 | 92.5 | 82.5-100.0 | 34.5 | 0.162 | 0.30 | home |
+| rsi-jev-v4.0-vl-torch | vision-v1 | 106 | 96.2 | 92.4-99.1 | 36.0 | 0.053 | 0.13 | cross |
+| rsi-jev-v4.0-vl-torch | vision-v2 | 128 | 85.2 | 78.6-91.7 | 32.0 | 0.223 | 0.35 | cross |
+| rsi-jev-v4.0-vl-torch | gui360-element | 60 | 48.3 | 36.7-61.7 | 6.4 | 0.791 | 0.28 | cross |
+| rsi-jev-v4.0-vl-torch | gui360-action | 77 | 62.3 | 51.5-72.3 | 50.0 | 0.579 | 0.43 | cross |
+| rsi-jev-v4.0-vl-torch | decisionbench | 40 | 57.5 | 41.5-73.3 | 34.5 | 0.495 | 0.69 | cross |
 
 ### Home turf vs cross-domain (and every image item)
 
@@ -65,6 +70,7 @@
 | cua-s1-4b-0.2-multimodal-webgpu | 137 | 63.5 (53.8-72.8) | 274 | 79.6 (74.4-84.5) | 76.3 (71.2-80.8) | 31/60 |
 | jev-omni-torch | 40 | 92.5 (82.5-100.0) | 371 | 79.2 (73.8-84.4) | 79.2 (73.8-84.4) | 30/60 |
 | jev-omni-webgpu | 40 | 92.5 (82.5-100.0) | 371 | 79.2 (73.9-84.2) | 79.2 (73.9-84.2) | 31/60 |
+| rsi-jev-v4.0-vl-torch | 0 | - | 411 | 75.7 (70.6-80.4) | 77.6 (72.5-82.5) | 31/60 |
 
 ### Accuracy by category
 
@@ -78,6 +84,7 @@
 | cua-s1-4b-0.2-multimodal-webgpu | 48.7 (n=39) | 85.7 (n=42) | 91.1 (n=112) | 95.1 (n=41) | 63.5 (n=137) | 55.0 (n=40) |
 | jev-omni-torch | 64.1 (n=39) | 97.6 (n=42) | 95.5 (n=112) | 100.0 (n=41) | 58.4 (n=137) | 92.5 (n=40) |
 | jev-omni-webgpu | 61.5 (n=39) | 97.6 (n=42) | 95.5 (n=112) | 100.0 (n=41) | 59.1 (n=137) | 92.5 (n=40) |
+| rsi-jev-v4.0-vl-torch | 59.0 (n=39) | 100.0 (n=42) | 94.6 (n=112) | 97.6 (n=41) | 56.2 (n=137) | 57.5 (n=40) |
 
 ### Latency in the full runs (median ms per item: image = preprocess + vision tower; one model at a time, on a shared machine)
 

@@ -9,6 +9,7 @@ own native request format. The models come from three sibling projects: [kev.js]
 | **Kev-4B vision** (Kev-0.8B as a second row) | [kev.js](https://github.com/ai-ecoverse/kev.js) ([#18](https://github.com/ai-ecoverse/kev.js/pull/18) @ 8ee0118): Kev's pointer head behind Qwen3.5's stock vision tower | 5.34 GB (1.02 GB) |
 | **cua-s1-4b-0.2 multimodal** | [cua-s1.js](https://github.com/ai-ecoverse/cua-s1.js) 0.3.0 `./4b`: a LoRA on Qwen3.5-4B that picks one lettered (element, action) option from a screenshot | 5.34 GB |
 | **Jev-Omni** | [jev-omni.js](https://github.com/ai-ecoverse/jev-omni.js) @ 008099d: Gemma 4 12B with a 256-way head, and images through Gemma 4's own vision embedder | 13.58 GB |
+| **RSI-Jev v6.1-VL 4B** and **27B** (servers, not browser models) | [RSI-Jev](https://github.com/Shanghua-Gao/RSI-Jev) @ fc982bb: open models (Apache-2.0 weights) on Qwen3.5-4B-Base and Qwen3.8-27B, served through a Jev-compatible API. See [below](#rsi-jev-v61-vl) | 9.70 GB and 54.49 GB (PyTorch weights) |
 
 The set has 411 items (`bench/items.jsonl`):
 - kev.js vision-v1 (106) and vision-v2 (128);
@@ -58,22 +59,24 @@ model beats always answering "yes":
 Accuracy in %, with 95% intervals from resampling tasks (an image, screen or state, together with all its questions).
 **Bold** marks each model's home turf. Chance is the mean of 1/K.
 
-| source (n, chance) | Kev-4B | Kev-0.8B | cua-s1-4b-0.2 | Jev-Omni |
-|---|---|---|---|---|
-| vision-v1 (106, 36.0) | **97.2** (93.6-100) | **90.6** (84.8-95.9) | 91.5 (85.5-96.3) | 98.1 (95.3-100) |
-| vision-v2 (128, 32.0) | **87.5** (82.0-92.7) | **66.4** (57.4-75.4) | 77.3 (69.9-84.6) | 85.2 (77.3-92.5) |
-| GUI-360 element choice (60, 6.4) | 61.7 (48.3-75.0) | 53.3 (40.0-66.7) | **65.0** (53.3-76.7) | 55.0 (41.7-66.7) |
-| GUI-360 action, yes/no (77, 50.0; always yes 77.9) | 75.3 (65.8-84.7) | 67.5 (57.7-77.0) | **62.3** (50.0-72.8) | 62.3 (51.8-72.0) |
-| GUI-360 screens right (cua-bench-s1 task score; always yes 43/60) | 41/60 | 35/60 | **31/60** | 31/60 |
-| DecisionBench slice, text (40, 34.5) | 65.0 (51.2-78.0) | 45.0 (30.8-60.0) | 55.0 (39.5-69.2) | **92.5** (82.5-100) |
+| source (n, chance) | Kev-4B | Kev-0.8B | cua-s1-4b-0.2 | Jev-Omni | RSI-Jev v6.1-VL 4B* | RSI-Jev v6.1-VL 27B* |
+|---|---|---|---|---|---|---|
+| vision-v1 (106, 36.0) | **97.2** (93.6-100) | **90.6** (84.8-95.9) | 91.5 (85.5-96.3) | 98.1 (95.3-100) | 98.1 (95.3-100) | 100.0 (100-100) |
+| vision-v2 (128, 32.0) | **87.5** (82.0-92.7) | **66.4** (57.4-75.4) | 77.3 (69.9-84.6) | 85.2 (77.3-92.5) | 89.8 (84.2-94.7) | 90.6 (85.6-95.3) |
+| GUI-360 element choice (60, 6.4) | 61.7 (48.3-75.0) | 53.3 (40.0-66.7) | **65.0** (53.3-76.7) | 55.0 (41.7-66.7) | 65.0 (53.3-76.7) | 70.0 (58.3-81.7) |
+| GUI-360 action, yes/no (77, 50.0; always yes 77.9) | 75.3 (65.8-84.7) | 67.5 (57.7-77.0) | **62.3** (50.0-72.8) | 62.3 (51.8-72.0) | 64.9 (54.2-74.7) | 72.7 (62.5-82.1) |
+| GUI-360 screens right (cua-bench-s1 task score; always yes 43/60) | 41/60 | 35/60 | **31/60** | 31/60 | 33/60 | 39/60 |
+| DecisionBench slice, text (40, 34.5) | 65.0 (51.2-78.0) | 45.0 (30.8-60.0) | 55.0 (39.5-69.2) | **92.5** (82.5-100) | 62.5 (47.4-77.3) | 87.5 (76.7-97.4) |
+
+*PyTorch bf16 on an NVIDIA GPU, not Chrome WebGPU. Neither has a home turf in this set.
 
 **Home turf vs cross-domain.** Kev and Jev-Omni lose accuracy away from home; cua-s1 does better away from home:
 
-| | Kev-4B | Kev-0.8B | cua-s1-4b-0.2 | Jev-Omni |
-|---|---|---|---|---|
-| home: n, accuracy | 234: 91.9 (88.5-95.2) | 234: 77.4 (71.0-83.4) | 137: 63.5 (53.8-72.8) | 40: 92.5 (82.5-100) |
-| cross-domain: n, accuracy | 177: 68.4 (60.5-76.4) | 177: 57.6 (49.4-65.4) | 274: 79.6 (74.4-84.5) | 371: 79.2 (73.9-84.2) |
-| all 371 image items | 83.6 (78.9-87.9) | 71.4 (65.9-76.8) | 76.3 (71.2-80.8) | 79.2 (73.9-84.2) |
+| | Kev-4B | Kev-0.8B | cua-s1-4b-0.2 | Jev-Omni | RSI-Jev v6.1-VL 4B* | RSI-Jev v6.1-VL 27B* |
+|---|---|---|---|---|---|---|
+| home: n, accuracy | 234: 91.9 (88.5-95.2) | 234: 77.4 (71.0-83.4) | 137: 63.5 (53.8-72.8) | 40: 92.5 (82.5-100) | - | - |
+| cross-domain: n, accuracy | 177: 68.4 (60.5-76.4) | 177: 57.6 (49.4-65.4) | 274: 79.6 (74.4-84.5) | 371: 79.2 (73.9-84.2) | 411: 81.0 (76.4-85.2) | 411: 86.4 (82.3-90.3) |
+| all 371 image items | 83.6 (78.9-87.9) | 71.4 (65.9-76.8) | 76.3 (71.2-80.8) | 79.2 (73.9-84.2) | 83.0 (78.2-87.6) | 86.3 (81.5-90.5) |
 
 cua-s1's home turf is its weakest source. Its GUI-360 score matches its own published multimodal number, 31/60
 (cua-s1.js README). Its adapter was trained on synthetic cua-bench-s1 forms, so real Office screens are hard for it
@@ -96,6 +99,8 @@ too.
 | Kev-0.8B | 28.2 | 88.1 | 83.0 | 97.6 | 61.3 | 45.0 |
 | cua-s1-4b-0.2 | 48.7 | 85.7 | 91.1 | 95.1 | 63.5 | 55.0 |
 | Jev-Omni | 61.5 | **97.6** | 95.5 | 100.0 | 59.1 | **92.5** |
+| RSI-Jev v6.1-VL 4B* | 71.8 | 95.2 | 98.2 | 100.0 | 65.0 | 62.5 |
+| RSI-Jev v6.1-VL 27B* | 79.5 | 97.6 | 97.3 | 100.0 | 71.5 | 87.5 |
 
 **Calibration.** Brier is summed over options: 0 is perfect, and uniform guessing scores 1 − 1/K. Flatness is the
 mean entropy divided by log K, where 1 is uniform.
@@ -106,6 +111,8 @@ mean entropy divided by log K, where 1 is uniform.
 | Kev-0.8B | 0.314 / 0.544 / 0.387 | 0.60 / 0.74 / 0.63 |
 | cua-s1-4b-0.2 | 0.590 / 0.260 / 0.351 | 0.28 / 0.34 / 0.30 |
 | Jev-Omni | 0.162 / 0.314 / 0.314 | 0.30 / 0.18 / 0.18 |
+| RSI-Jev v6.1-VL 4B* | - / 0.289 / 0.274 | - / 0.23 / 0.19 |
+| RSI-Jev v6.1-VL 27B* | - / 0.204 / 0.210 | - / 0.17 / 0.16 |
 
 - **Kev** spreads its probabilities when it leaves home. The answer is uncertain, not confidently wrong.
 - **Jev-Omni and cua-s1** stay sharp away from home. cua-s1 on its GUI home turf is confidently wrong (Brier 0.59 at
@@ -172,6 +179,42 @@ per source.
   prompt it was not trained with.
 - **Serving temperature.** Kev probabilities are at the checkpoint's serving temperature, as kev.js serves them.
   cua-s1 and Jev-Omni have no temperature.
+
+## RSI-Jev v6.1-VL
+
+[RSI-Jev](https://github.com/Shanghua-Gao/RSI-Jev) v6.1-VL 4B
+([shgao/rsi-jev-v6.1-vl-4b](https://huggingface.co/shgao/rsi-jev-v6.1-vl-4b), on Qwen3.5-4B-Base) and v6.1-VL 27B
+([shgao/rsi-jev-v6.1-vl-27b](https://huggingface.co/shgao/rsi-jev-v6.1-vl-27b), on Qwen3.8-27B) are open models
+(Apache-2.0 weights) served through a Jev-compatible API. Their rows come from PyTorch bf16 on NVIDIA GPUs (code @
+fc982bb; the 4B on an RTX PRO 6000 Blackwell, the 27B on an H200), so they have no latency, memory or browser-parity
+rows. They get Kev's native requests from `bench/kev.jsonl`, one question per request, with the image before the
+state (CONVERSIONS.md), sent over HTTP by `torch/rsijev_client.py` to `rsi-jev serve`. The 27B is served with
+`--effort auto`, its recommended setting; it changes only the 40 DecisionBench items, since image requests always run
+at full depth. Per-item outputs: `results/rsi-jev-v6.1-vl-4b-torch.jsonl`, `results/rsi-jev-v6.1-vl-27b-torch.jsonl`.
+
+On the 234 image items (vision-v1 and vision-v2):
+
+| 234 image items | accuracy (95% CI) |
+|---|---|
+| Kev-4B | 91.9 (88.5-95.2) |
+| Kev-0.8B | 77.4 (71.0-83.4) |
+| cua-s1-4b-0.2 | 83.8 (78.5-88.8) |
+| Jev-Omni | 91.0 (86.2-95.3) |
+| RSI-Jev v6.1-VL 4B | 93.6 (90.5-96.6) |
+| RSI-Jev v6.1-VL 27B | 94.9 (91.8-97.6) |
+
+On GUI-360 action items both are below always answering yes (64.9 and 72.7, against 77.9).
+
+To reproduce, on a CUDA GPU (the runs also had flash-linear-attention, the package's `fast` extra):
+
+```sh
+pip install "rsi-jev[fast,vision] @ git+https://github.com/Shanghua-Gao/RSI-Jev@fc982bbd3fb185af2ce629091588cb640400dafb"
+rsi-jev serve v6.1-vl-4b                       # http://127.0.0.1:8000
+python3 torch/rsijev_client.py --out results/rsi-jev-v6.1-vl-4b-torch.jsonl
+rsi-jev serve v6.1-vl-27b --effort auto        # one 96 GB GPU
+python3 torch/rsijev_client.py --out results/rsi-jev-v6.1-vl-27b-torch.jsonl
+python3 metrics.py
+```
 
 ## Running it
 

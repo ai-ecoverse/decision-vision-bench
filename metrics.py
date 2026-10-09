@@ -23,9 +23,11 @@ HERE = Path(__file__).resolve().parent
 RES = HERE / "results"
 JEV = RES / "jev"   # copies of jev-omni.js build/eval/*: this bench's rows, without prompts and hidden states
 
-MODELS = {"kev-4b-vision": "Kev-4B", "kev-0.8b-vision": "Kev-0.8B", "cua-s1-4b-0.2-multimodal": "cua-s1-4b-0.2", "jev-omni": "Jev-Omni"}
+MODELS = {"kev-4b-vision": "Kev-4B", "kev-0.8b-vision": "Kev-0.8B", "cua-s1-4b-0.2-multimodal": "cua-s1-4b-0.2", "jev-omni": "Jev-Omni",
+          "rsi-jev-v6.1-vl-4b": "RSI-Jev v6.1-VL 4B", "rsi-jev-v6.1-vl-27b": "RSI-Jev v6.1-VL 27B"}
 HOME = {"kev-4b-vision": {"vision-v1", "vision-v2"}, "kev-0.8b-vision": {"vision-v1", "vision-v2"},
-        "cua-s1-4b-0.2-multimodal": {"gui360"}, "jev-omni": {"decisionbench"}}
+        "cua-s1-4b-0.2-multimodal": {"gui360"}, "jev-omni": {"decisionbench"},
+        "rsi-jev-v6.1-vl-4b": set(), "rsi-jev-v6.1-vl-27b": set()}
 SOURCES = [("vision-v1", None), ("vision-v2", None), ("gui360", "element"), ("gui360", "action"), ("decisionbench", None)]
 CATEGORIES = ["counting", "charts", "small_text", "scene", "gui", "text"]
 
@@ -258,7 +260,7 @@ def tables(summary, parity, lat, pairs) -> str:
     out.append("|---|---|---:|---:|---|")
     for n in names:
         m = summary[n]["meta"]
-        if m:
+        if "bundleBytes" in m:   # browser runs
             out.append(f"| {n} | {m.get('adapter')} | {m.get('loadMs')} | {m['bundleBytes'] / 1e9:.2f} | {m['memoryMB']['peak'] / 1024:.1f} ({m['memoryMB']['baseline'] / 1024:.1f}) |")
     if parity:
         out.append("\n### Browser vs PyTorch\n")

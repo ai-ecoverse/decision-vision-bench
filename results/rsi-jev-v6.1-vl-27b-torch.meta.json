@@ -1,0 +1,10 @@
+{
+ "model": "rsi-jev-v6.1-vl-27b",
+ "weights": "shgao/rsi-jev-v6.1-vl-27b@d0dccc052ee844ab7481ddfacad1b7335ab394e0",
+ "code": "Shanghua-Gao/RSI-Jev@fc982bbd3fb185af2ce629091588cb640400dafb",
+ "runtime": "PyTorch 2.7.1 (CUDA 12.8), bf16, flash-linear-attention 0.5.2, transformers 5.17.0; 1x NVIDIA H200",
+ "client": "torch/rsijev_client.py over HTTP (rsi-jev serve)",
+ "items": 411,
+ "at": "2026-10-09",
+ "serving": "effort auto (server default)"
+}

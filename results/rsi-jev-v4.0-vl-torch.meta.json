@@ -1,9 +1,0 @@
-{
- "model": "rsi-jev-v4.0-vl",
- "weights": "shgao/rsi-jev-v4.0-vl-qwen3.5-2b@079ec5f4f421481a77609176dabc2b2ef46dc497",
- "code": "Shanghua-Gao/RSI-Jev@887cbebc96550e8fdd55ef65c857fad76f447b5b",
- "runtime": "PyTorch 2.14 (CUDA), bf16, flash-linear-attention 0.5.2",
- "calibration": "oof_head_scorefloor",
- "items": 411,
- "at": "2026-10-01"
-}

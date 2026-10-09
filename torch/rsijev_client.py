@@ -1,8 +1,8 @@
 """RSI-Jev over bench/kev.jsonl through its Jev-compatible server (POST /v1/systemone).
 
-  pip install "rsi-jev[vision] @ git+https://github.com/Shanghua-Gao/RSI-Jev"
-  rsi-jev serve shgao/rsi-jev-v4.0-vl-qwen3.5-2b          # http://127.0.0.1:8000
-  python3 torch/rsijev_client.py --out results/rsi-jev-v4.0-vl-torch.jsonl
+  pip install "rsi-jev[fast,vision] @ git+https://github.com/Shanghua-Gao/RSI-Jev"
+  rsi-jev serve v6.1-vl-4b                       # http://127.0.0.1:8000; v6.1-vl-27b with --effort auto
+  python3 torch/rsijev_client.py --out results/rsi-jev-v6.1-vl-4b-torch.jsonl
 
 Kev's native requests, one question per request, unchanged; the image goes in the request's `images` as a data URL
 of the file's own bytes, and the server puts it before the state. Probabilities come back in the API's native order

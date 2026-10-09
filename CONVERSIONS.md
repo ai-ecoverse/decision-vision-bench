@@ -78,7 +78,7 @@ serves.
 - **decisionbench:** Jev-Omni's `decisionbench.py` mapping: `True: …`/`False: …`, `key: description`, and the levels.
   The ids match its `reference-fp32.jsonl` and `browser-q8f32.jsonl` for this slice.
 
-## RSI-Jev v4.0-VL (Jev-compatible `POST /v1/systemone`; `torch/rsijev_client.py`)
+## RSI-Jev v6.1-VL 4B and 27B (Jev-compatible `POST /v1/systemone`; `torch/rsijev_client.py`)
 
 - **Every source:** Kev's request from `bench/kev.jsonl`, unchanged, plus `model`. The image goes in `images` as a data
   URL of the file's own bytes, and the server puts it before the state. One question per request.
